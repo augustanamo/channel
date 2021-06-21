@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>2020春夏 高级定制服系列-发布会 -CHANEL</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="css/news.css">
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+		<script type="text/javascript" src="js/jquery-3.5.1.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<!-- 下拉导航栏 -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.list').click(function() {
+					$('.menu').slideToggle();
+				});
+			});
+		</script>
+		<!-- 导航栏滑动消失 -->
+		<script type="text/javascript">
+			window.onload = function() {
+				var ulbanner = document.querySelector('.ulbanner');
+				var mainbanner = document.querySelector('.mainbanner');
+				var Chanelnews = document.querySelector('.Chanel-news');
+				document.addEventListener('scroll', function() {
+					if (window.pageYOffset >= 40) {
+						ulbanner.style.display = 'none';
+						mainbanner.style.height = 60 + 'px';
+					} else {
+						ulbanner.style.display = 'block';
+						mainbanner.style.height = 100 + 'px';
+					}
+				})
+				document.addEventListener('scroll', function() {
+					if (window.pageYOffset >= 10500) {
+						Chanelnews.style.display = 'none';
+					} else {
+						Chanelnews.style.display = 'block';
+					}
+				})
+			}
+		</script>
+		<!-- 轮播图 -->
+		<script type="text/javascript">
+			$(function() {
+				/*未元素的首尾添加补白*/
+				var $panels = $('#slider .scrollContainer > li');
+				var $parent = $panels.parent(); //或许当前li的最近一级的父元素
+				var $length = $panels.length; //获取指定length值
+				var $first = $panels.eq(0).clone().addClass("panel cloned").attr("id", 'panel_' + ($length +
+					1)); //获取第一个元素并复制
+				var $last = $panels.eq($length - 1).clone().addClass("cloned").attr("id", 'panel_0');; //获取最后一个元素并复制
+				$parent.append($first); //将li序列中的第一个添加到ul元素中的最后一个  $("#slide02").scrollLeft(0);
+				$parent.prepend($last); //将li序列中的最后一个添加到ul元素中的第一个
+				var totalPanels = $(".scrollContainer").children().length; //所有子元素的数字，滚动元素的个数 7
+				var regWidth = $(".panel").css("width"); //获取li元素的宽度
+				var regImgWidth = $(".panel img").css("width"); //获取其中图片的宽度
+				var movingDistance = 195; //每次移动的距离
+				var curWidth = 230; //当前中间li的宽度为350px
+				var curHeight = 312; //当前中间li的高度未312  
+				var curImgWidth = 230;
+				var curImgHeight = 168;
+				var othersW = 170; //其他li的宽度
+				var othersH = 100; //高度
+				var othersImgW = 170; //其他li的宽度
+				var othersImgH = 113; //高度
+				var $panels = $('#slider .scrollContainer > li'); //此处作用是将复制进来补白的元素重新赋值
+				var $container = $('#slider .scrollContainer');
+				$panels.css({
+					'float': 'left',
+					'position': 'relative'
+				});
+				$("#slider").data("currentlyMoving", false); //是否正在运动中
+				$container.css('width', (($panels[0].offsetWidth + 25) * $panels.length) + 60).css('left',
+					'0'); //计算容器的总的宽度 PS：25为margin值 offsetWidth
+				var scroll = $('#slider .scroll').css('overflow', 'hidden');
+
+				function returnToNormal(element) { //li元素返回到正常状态
+					$(element).animate({
+						width: othersW,
+						height: othersH
+					}).find("img").animate({
+						width: othersImgW,
+						height: othersImgH
+					});
+				};
+
+				function growBigger(element) { //当前元素之间变大
+					$(element).addClass("current").animate({
+							width: curWidth,
+							height: curHeight
+						}).siblings().removeClass("current")
+						.end().find("img").animate({
+							width: curImgWidth,
+							height: curImgHeight
+						})
+				}
+				//direction true = right, false = left
+				function change(direction) {
+					//if not at the first or last panel
+					if ((direction && !(curPanel < totalPanels - 2)) || (!direction && (curPanel <= 1))) {
+						return false;
+					}
+					//if not currently moving
+					if (($("#slider").data("currentlyMoving") == false)) {
+						$("#slider").data("currentlyMoving", true);
+						var next = direction ? curPanel + 1 : curPanel - 1;
+						var leftValue = $(".scrollContainer").css("left");
+						var movement = direction ? parseFloat(leftValue, 10) - movingDistance : parseFloat(leftValue,
+							10) + movingDistance;
+						$(".scrollContainer").stop().animate({
+							"left": movement
+						}, function() {
+							$("#slider").data("currentlyMoving", false);
+						});
+						returnToNormal("#panel_" + curPanel);
+						growBigger("#panel_" + next);
+						curPanel = next;
+						//remove all previous bound functions
+						$("#panel_" + (curPanel + 1)).unbind();
+						//go forward
+						$("#panel_" + (curPanel + 1)).click(function() {
+							change(true);
+						});
+						//remove all previous bound functions															
+						$("#panel_" + (curPanel - 1)).unbind();
+						//go back
+						$("#panel_" + (curPanel - 1)).click(function() {
+							change(false);
+						});
+						//remove all previous bound functions
+						$("#panel_" + curPanel).unbind();
+					}
+				}
+				// Set up "Current" panel and next and prev 设置当前元素和上下
+				growBigger("#panel_1");
+				var curPanel = 1;
+				$("#panel_" + (curPanel + 1)).click(function() {
+					change(true);
+					return false;
+				});
+				$("#panel_" + (curPanel - 1)).click(function() {
+					change(false);
+					return false;
+				});
+				//when the prev/next arrows are clicked
+				$("#slider .next").click(function() {
+					change(true);
+				});
+				$("#slider .prev").click(function() {
+					change(false);
+				});
+				$(window).keydown(function(event) { //键盘方向键控制
+					switch (event.keyCode) {
+						case 13: //enter
+							$(".next").click();
+							break;
+						case 37: //prev arrow
+							$(".prev").click();
+							break;
+						case 39: //next arrow
+							$(".next").click();
+							break;
+					}
+				});
+			});
+		</script>
+		<!-- 下拉列表 -->
+		<script type="text/javascript">
+			$(function() {
+				/*
+				 * 模拟网页中所有的下拉列表select
+				 */
+				function selectModel() {
+					var $box = $('div.model-select-box');
+					var $option = $('ul.model-select-option', $box);
+					var $txt = $('div.model-select-text', $box);
+					var speed = 90;
+					var $bg = $('b.bg1', $box)
+					// 点击小三角
+					$bg.click(function() {
+						$option.not($(this).siblings('ul.model-select-option')).slideUp(speed, function() {});
+						$(this).siblings('ul.model-select-option').slideToggle(speed, function() {
+							// int($(this));
+						});
+						return false;
+					})
+					/*
+					 * 单击某个下拉列表时，显示当前下拉列表的下拉列表框
+					 * 并隐藏页面中其他下拉列表
+					 */
+					$txt.click(function(e) {
+						$option.not($(this).siblings('ul.model-select-option')).slideUp(speed, function() {});
+						$(this).siblings('ul.model-select-option').slideToggle(speed, function() {
+							// int($(this));
+						});
+						return false;
+					});
+					//点击选择，关闭其他下拉
+					/*
+					 * 为每个下拉列表框中的选项设置默认选中标识 data-selected
+					 * 点击下拉列表框中的选项时，将选项的 data-option 属性的属性值赋给下拉列表的 data-value 属性，并改变默认选中标识 data-selected
+					 * 为选项添加 mouseover 事件
+					 */
+					$option.find('li').each(function(index, element) {
+						// console.log($(this) + '1');
+						if ($(this).hasClass('selected')) {
+							$(this).parent('.model-select-option').siblings('.model-select-text').text($(this)
+								.text())
+						}
+
+						$(this).mousedown(function() {
+							$(this).parent().siblings('div.model-select-text').text($(this).text())
+								.attr('value', $(this).attr('data-option'));
+							$option.slideUp(speed, function() {});
+							$(this).addClass('selected').siblings('li').removeClass('selected');
+							return false;
+						})
+
+						$(this).on('mouseover', function() {
+							$(this).addClass('selected').siblings('li').removeClass('selected');
+						})
+					})
+					//点击文档，隐藏所有下拉
+					$(document).click(function(e) {
+						$option.slideUp(speed, function() {});
+					});
+				}
+				selectModel();
+			})
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid" style="padding-left: 0px; padding-right: 0px; padding-bottom: 0px;">
+			<div class="banner">
+				<div class="box1">
+					<div class="mainbanner" style="height: 100px;">
+						<div class="top"></div>
+						<div class="logo">
+							<a href="#"><img src="img/logo.svg"></a>
+						</div>
+						<a href="login.html" style="right: 0px; left: 0px;"><i class="glyphicon glyphicon-log-in"
+								id="glyphicon"></i></ a>
+							<div class="ulbanner" style="font-size: 12px;">
+								<div>
+									<ul>
+										<li><a href="index.html">高级定制服系列</a></li>
+										<li><a href="#">高级成衣</a></li>
+										<li class="list"><a href="#">产品系列</a>
+											<div class="menu">
+												<figure>
+													<img src="img/0.jpg" alt="春夏服装">
+													<figcaption>2020春夏</figcaption>
+												</figure>
+												<div class="menu_tab">
+													<div class="title">
+														高级成衣
+													</div>
+													<a href="#"><span>外套</span></a>
+													<a href="#"><span>连衣裙</span></a>
+													<a href="#"><span>衬衫及上衣</span></a>
+													<a href="#"><span>开襟衫与套头衫</span></a>
+													<a href="#"><span>半身裙</span></a>
+													<a href="#"><span>裤装及短裤</span></a>
+													<a href="#"><span>外衣</span></a>
+													<a href="#"><span>泳装</span></a>
+													<a href="#"><span>针织</span></a>
+													<a href="#"><span>皮革</span></a>
+													<a href="#"><span>全部高级成衣系</span></a>
+												</div>
+												<div class="menu_tab">
+													<div class="title">
+														手袋
+													</div>
+													<a href="#"><span>当季新款</span></a>
+													<a href="#"><span>经典口盖包</span></a>
+													<a href="#"><span>2.55口盖包</span></a>
+													<a href="#"><span>香奈儿19手袋</span></a>
+													<a href="#"><span>香奈儿Gabrielle手袋</span></a>
+													<a href="#"><span>Boy Chanel口盖包</span></a>
+													<a href="#"><span>全部手袋</span></a>
+												</div>
+												<div class="menu_tab">
+													<div class="title">
+														配饰及腕表
+													</div>
+													<a href="#"><span>鞋履</span></a>
+													<a href="#"><span>小皮件</span></a>
+													<a href="#"><span>服饰珠宝</span></a>
+													<a href="#"><span>围巾</span></a>
+													<a href="#"><span>头饰</span></a>
+													<a href="#"><span>山茶花</span></a>
+													<a href="#"><span>腰带</span></a>
+													<a href="#"><span>其他配饰</span></a>
+												</div>
+												<div class="menu_tab">
+													<div class="title">
+														眼镜
+													</div>
+													<a href="#"><span>太阳眼镜</span></a>
+													<a href="#"><span>光学眼镜</span></a>
+												</div>
+											</div>
+										</li>
+										<li class="border-black"><a href="news.html">CHANEL NEWS</a></li>
+									</ul>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 内容 -->
+		<div id="content">
+			<div class="Chanel-news">
+				<img src="img/ia_300000028.gif">
+			</div>
+			<article>
+				<video width="650" loop="loop" autoplay="autoplay" muted="muted">
+					<source src="img/video8.mp4" type="video/mp4">
+					</source>
+				</video>
+				<p><b>2020年12月22日星期二</b></p>
+				<p><b>夏洛特·卡西拉奇<br />新晋香奈儿广告形象代言人</b></font>
+				</p>
+				<p>2021年1月1日，夏洛特·卡西拉奇（Charlotte
+					Casiraghi）将成为香奈儿广告形象代言<br>人，演绎2021春夏高级成衣系列广告大片。这一合作关系的正式建立，是基于双方长期<br>的信任与长久的友谊，从卡尔·拉格斐开始，到如今的维吉妮·维娅。此外，为了延续嘉柏<br>丽尔·香奈儿与卡尔·拉格斐对文学全身心的热爱，香奈儿品牌、维吉妮·维娅与夏洛特·卡西<br>拉奇将共同开启一项名为“康朋街文学之约”（Les
+					Rendez-vous littéraires rue<br> Cambon）的项目。</p>
+			</article>
+			<article>
+				<img src="img/ia_300000093.png" />
+				<p><b>2020年12月5日星期六</b></p>
+				<p><b>尊贵的优雅<br />2020/21高级手工坊系列发布会</b></p>
+				<p>层叠的珠宝腰带，凸显自在而柔和的女性气质。香奈儿2020/21“女士城堡”高级手工坊系<br>列造型影片，拍摄于舍农索城堡。</p>
+			</article>
+			<div class="btnMode" id="slider">
+				<a href="javascript:void(0);" class="prev btn"></a>
+				<div class="scroll">
+					<ul class="scrollContainer">
+						<li class="panel" id="panel_1">
+							<a href="#" class="inside">
+								<img width="230" height="295" alt="" src="img/row6.webp" />
+							</a>
+						</li>
+						<li class="panel" id="panel_2">
+							<a href="#" class="inside">
+								<img width="230" height="295" alt="" src="img/row2.webp" />
+
+							</a>
+						</li>
+						<li class="panel" id="panel_3">
+							<a href="#" class="inside">
+								<img width="230" height="295" alt="" src="img/row3.webp" />
+							</a>
+						</li>
+					</ul>
+				</div>
+				<a href="javascript:void(0);" class="next btn"></a>
+			</div>
+			<article class="img">
+				<p><b>2020年12月6日星期日</b></p>
+				<p><b>城堡中的女士<br />2020/21高级手工坊系列发布会</b></p>
+				<p>“我喜欢将一切混搭，文艺复兴与浪漫主义”，维吉妮·维娅讲述香奈儿2020/21“女士城堡”<br>高级手工坊系列发布会的创作灵感。</p>
+			</article>
+			<article>
+				<img src="img/ia_300000008.jpg" />
+				<p align="center"><b>2020年12月6日星期日</b></p>
+				<p align="center">
+					<b>灵动飘逸的格纹<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p align="center">
+					饰有流苏细节的面料演绎几何图案，与黑白方格的长廊地面相映成趣。醒目的廓形，搭配<br>Desrues服饰珠宝坊打造的皮质腰带，其上点缀珍珠。香奈儿2020/21“女士城堡”高级手工<br>坊系列造型影片，拍摄于舍农索城堡。
+				</p>
+			</article>
+			<article class="img">
+				<img src="img/ia_300000013.jpg" />
+				<img src="img/ia_300000012.jpg" />
+				<img src="img/row4.webp">
+				<p align="center"><b>2020年12月6日星期日</b></p>
+				<p align="center">
+					<b>光彩夺目的精湛工艺<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p align="center">香奈儿2020/21“女士城堡”高级手工坊系列中，配饰作品令造型魅力鲜明：Maison
+					Michel<br>制帽坊打造的黑色帽子、以及光彩夺目的宽腰带，其上有着Montex刺绣坊打造的华美刺<br>绣，演绎舍农索城堡轮廓的图案。</p>
+			</article>
+			<article>
+				<img src="img/ia_300000014.jpg">
+				<p align="center"><b>2020年12月5日星期六</b></p>
+				<p align="center">
+					<b>华美刺绣<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p align="center">如星群般的珠宝，令及踝长裙梦幻而闪耀。香奈儿2020/21“女士城堡”高级手工坊系列造<br />型影片，拍摄于舍农索城堡。</p>
+			</article>
+			<article class="img">
+				<img src="img/row5.webp">
+				<img src="img/ia_300000019.jpg">
+				<img src="img/ia_300000018.jpg">
+
+				<p align="center"><b>2020年12月5日星期六</b></p>
+				<p align="center">
+					<b>精妙对比<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p align="center">香奈儿2020/21“女士城堡”高级手工坊系列中，量感与材质对比巧妙，令廓形精致非凡。</p>
+			</article>
+			<article>
+				<img src="img/ia_300000020.jpg">
+				<p><b>2020年12月5日星期六</b></p>
+				<p>
+					<b>暗色纹理<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p>山茶花图案的半身裙，搭配皮质流苏大衣与Massaro鞋履坊打造的长靴，演绎墨黑色的精<br />妙质感。香奈儿2020/21“女士城堡”高级手工坊系列造型影片，拍摄于舍农索城堡。</p>
+			</article>
+			<article class="img">
+				<img src="img/ia_300000025.jpg">
+				<img src="img/ia_300000024.jpg">
+				<img src="img/ia_300000007.jpg">
+				<p><b>2020年12月5日星期六</b></p>
+				<p>
+					<b>黑金廓形<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p>香奈儿2020/21“女士城堡”高级手工坊系列中，黑色露肩廓形果决与自信，其肩线处的设<br />计更为整体造型平添动人的吸引力。</p>
+			</article>
+			<article>
+				<img src="img/ia_300000026.jpg">
+				<p><b>2020年12月5日星期六</b></p>
+				<p>
+					<b>斜纹软呢的现代演绎<br />2020/21高级手工坊系列发布会</b>
+				</p>
+				<p>本季，香奈儿标志性的经典套装，以完美的细节表达，获得创新诠释。香奈儿2020/21“女<br />士城堡”高级手工坊系列造型影片，拍摄于舍农索城堡。</p><br />
+			</article>
+			<button>下一个</button>
+        </div>
+			<div id="contact">
+				<div class="contact1">
+					<b>
+						<p>联系我们</p>
+					</b>
+					<span>香奈儿客户服务</span>
+					<b>
+						<p style="margin-top: 50px;">电话 > 电子邮箱 ></p>
+					</b>
+				</div>
+				<div class="contact2">
+					<b>
+						<p>寻找销售店铺</p>
+					</b>
+					<span>寻找您附近的精品店信息：服务、营业时间<br />与联系方式</span><br />
+					<input type="text" name="位置" id="地址" placeholder="输入地址或城市" required="required" />
+				</div>
+				<div class="contact3">
+					<b>
+						<p>邮件订阅</p>
+					</b>
+					<span>立即订阅，获取CHANEL最新动态</span><br />
+					<input type="email" name="email" id="电子邮件" placeholder="电子邮件" required="required" />
+				</div>
+			</div>
+			<div id="contact-logo">
+				<ul>
+				    <li><svg viewBox="-0.333 -0.46 349.999 54.403" xmlns="http://www.w3.org/2000/svg"><path d="M41.135 34.799l9.166 5.248c-4.583 8.428-13.526 13.896-23.653 13.896-14.784 0-26.98-11.31-26.98-27.201C-.332 10.849 11.864-.46 26.648-.46c10.127 0 19.07 5.47 23.653 13.896l-9.166 5.248c-2.66-5.47-8.057-8.796-14.487-8.796-9.24 0-16.263 6.875-16.263 16.854s7.022 16.854 16.263 16.854c6.43 0 11.826-3.328 14.487-8.797zM99.456 52.613V30.438H73.584v22.174H63.236V.87h10.348v19.219h25.872V.87h10.349v51.743H99.456zM180.03 52.613h-11.311l-5.1-11.827h-27.054l-5.101 11.827h-11.31L143.071.87h14.045l22.914 51.743zm-20.549-21.435l-9.389-21.807-9.388 21.807h18.777zM227.703 52.613l-27.72-40.729v40.729h-9.609V.87h13.675l23.284 34.298V.87h9.61v51.743h-9.24zM256.9 52.613V.87h36.959v9.61h-27.351v11.088h23.654v9.61h-23.654v11.826h28.829v9.609H256.9zM311.969 52.613V.87h10.348v41.396h27.35v10.348h-37.698z"></path></svg></li>	
+				    <li><span>Chanel News</span></li>
+			    </ul>
+			</div>
+			<div class="clearfix"></div>
+		<!-- 底部 -->
+		<footer class="footer">
+			<div class="footer-logo">
+				<a href="javascript:;"><img src="img/logo1.PNG" id="logo"></a>
+				<div class="row">
+					<div class="col-md-3">
+						<p>前往CHANEL.CO：</p>
+						<ul>
+							<li><a href="#">高级定制服</a></li>
+							<li><a href="#">服饰名品</a></li>
+							<li><a href="#">腕表</a></li>
+							<li><a href="#">高级珠宝</a></li>
+							<li><a href="#">香水</a></li>
+							<li><a href="#">彩妆</a></li>
+							<li><a href="#">护肤品</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<p>香奈儿品牌</p>
+						<ul>
+							<li><a href="#">insid Chanel</a></li>
+							<li><a href="#">工作机会</a></li>
+							<li><a href="#">Fondation Chanel</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<p>保养与售后服务</p>
+						<ul>
+							<li><a href="#">寻找销售店铺</a></li>
+							<li><a href="contact.html">联系我们</a></li>
+							<li><a href="#">常见问题</a></li>
+							<li><a href="#">养护与服务</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<p>法律条文</p>
+						<ul>
+							<li><a href="#">隐私政策</a></li>
+							<li><a href="#">法律声明</a></li>
+						</ul>
+					</div>
+				</div>
+				<hr>
+				<div>
+					<p class="footer-language" onclick="dianwo()">Languages:<a href="javascript:;">中国大陆</a></p>
+				</div>
+				<div class="zhezhao" id='zhezhao'>
+				</div>
+				<div class="tankuang" id="tankuang">
+					<div id="header">
+						<div id="title">
+							YOU ARE VISITING THE 中国大陆 CHANEL WEBSITE
+						</div>
+						<p>Location selection allows chanel to deliver you the best services with respect to your
+							localisation.</p>
+						<label>Change your location</label>
+						<div class="model-select-box">
+							<div class="model-select-text" value=""> 请选择:</div>
+							<b class="bg1"></b>
+							<ul class="model-select-option">
+								<li data-option="1" class="selected">简体中文(中国大陆)</li>
+								<li data-option="2">AMERICA</li>
+								<li data-option="3">EUROPE</li>
+							</ul>
+						</div>
+						<input type="submit" name="" id="submit" value="GO TO WEBSITE" />
+						<div id="header-right" onclick="hidder()">x</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</footer>
+		<!-- 更换语言 -->
+		<script type="text/javascript">
+			document.getElementById('tankuang').style.display = "none";
+			document.getElementById('zhezhao').style.display = "none";
+			var button = document.querySelector("body");
+
+			function dianwo() {
+				document.getElementById('zhezhao').style.display = "";
+				document.getElementById('tankuang').style.display = "";
+				button.style = "overflow: hidden;";
+			}
+
+			function hidder() {
+				document.getElementById('zhezhao').style.display = "none";
+				document.getElementById('tankuang').style.display = "none";
+				button.style = "";
+			}
+		</script>
+		<!-- logo滑动缩小 -->
+		<script type="text/javascript">
+			var Chanelnews = document.querySelector('.Chanel-news');
+			document.addEventListener('scroll', function() {
+				if (window.pageYOffset >= 40) {
+					Chanelnews.style.transform = "scale(.7)";
+				} else {
+					Chanelnews.style = "";
+				}
+			})
+		</script>
+	</body>
+</html>
